@@ -218,10 +218,10 @@ public unsafe class OscParser
         int index;
         for (index = offset; index < end; index++)
         {
-            if (_buffer[index] != 0) break;
+            if (_buffer[index] == 0) break; // we break on the null terminator
         }
 
-        var length = index - offset;
+        var length = index - offset + 1;  // need to account for the null terminator when aligning to 32 bits
         return (length + 3) & ~3;            // align to 4 bytes
     }
 
