@@ -23,11 +23,27 @@ public class ParsingTests
     public void BeforeEach()
     {
         _parser.MessageValues.ElementCount = 0;
+        Array.Clear(_parser._buffer, 0, BufferSize); // clear the buffer before each test
     }
 
     [OneTimeTearDown]
     public void AfterAll()
     {
+
+    }
+
+    [TestCaseSource(typeof(StringLengthTestData), nameof(StringLengthTestData.StringLengthTestCases))]
+    public void StringLengthParsing(StringLengthParseTestCase testCase)
+    {
+
+        // manually copy into the parser buffer
+        for (var i = 0; i < testCase.Bytes.Length; i++)
+        {
+            _parser._buffer[i] = testCase.Bytes[i];
+        }
+        
+        Assert.AreEqual(testCase.Expected, _parser.GetStringLength(testCase.Start));
+        
 
     }
 

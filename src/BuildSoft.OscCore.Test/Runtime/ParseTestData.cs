@@ -40,6 +40,80 @@ internal static class MessageTestData
     }
 }
 
+public class StringLengthParseTestCase
+{
+    public readonly byte[] Bytes;
+    public readonly int Start;
+    public readonly int Expected;
+    
+    public StringLengthParseTestCase(byte[] bytes, int start, int expected)
+    {
+        Bytes = bytes;
+        Start = start;
+        Expected = expected;
+    }
+}
+
+internal static class StringLengthTestData
+{
+
+    public static IEnumerable StringLengthTestCases
+    {
+
+        get
+        {
+
+            // Four byte string
+            var bytes1 = new byte[]
+            {
+                (byte)'a', (byte)'b', (byte)'c', (byte)'d', (byte)0, (byte)0, (byte)0, (byte)0,
+                (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0,
+            };
+
+            yield return new StringLengthParseTestCase(bytes1, 0, 8);
+            
+            // One byte string
+            var bytes2 = new byte[]
+            {
+                (byte)'a', (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0,
+                (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0,
+            };
+            
+            yield return new StringLengthParseTestCase(bytes2, 0, 4);
+            
+            // Three byte string
+            var bytes3 = new byte[]
+            {
+                (byte)'a', (byte)'b', (byte)'c', (byte)0, (byte)0, (byte)0, (byte)0, (byte)0,
+                (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0,
+            };
+            
+            yield return new StringLengthParseTestCase(bytes3, 0, 4);
+            
+            // Eight byte string
+            var bytes4 = new byte[]
+            {
+                (byte)'a', (byte)'b', (byte)'c', (byte)'d', (byte)'e', (byte)'f', (byte)'g', (byte)'h',
+                (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0,
+            };
+            
+            yield return new StringLengthParseTestCase(bytes4, 0, 12);
+            
+            // Seven byte string
+            var bytes5 = new byte[]
+            {
+                (byte)'a', (byte)'b', (byte)'c', (byte)'d', (byte)'e', (byte)'f', (byte)'g', (byte)0,
+                (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0,
+            };
+            
+            yield return new StringLengthParseTestCase(bytes5, 0, 8);
+
+        }
+        
+    }
+    
+}
+
 public class TypeTagParseTestCase
 {
     public readonly byte[] Bytes;
