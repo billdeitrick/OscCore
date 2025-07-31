@@ -63,7 +63,16 @@ internal sealed class OscSocket : IDisposable
     public void Dispose()
     {
         if (_disposed) return;
-        _socket.Dispose();
         _disposed = true;
+
+        // Otherwise, the receive loop blocks and we hang on shutdown
+        // This bumps us out of the receive loop, so the Serve method can
+        // see that we're disposing the object.
+        using (var dummy = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+        {
+            dummy.SendTo(new byte[] { }, new IPEndPoint(IPAddress.Loopback, Port));
+        }
+        
+        _socket.Dispose();
     }
 }
