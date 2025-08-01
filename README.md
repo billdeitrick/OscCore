@@ -1,6 +1,10 @@
 # OscCore
 A performance-oriented OSC ([Open Sound Control](http://opensoundcontrol.org/spec-1_0)) library for .NET.
 
+## About this Fork
+
+This is a fork of the [ChanyaVRC/OscCore](https://github.com/ChanyaVRC/OscCore) project, which is itself a descendant of the original OscCore project by [Stella Cannefax](https://github.com/stella3d/OscCore). Since these original project haven't seen updates for a few years, this fork was created to address bugs and add features needed to support work with OSC in .NET.
+
 ## Versions and Platforms
 
 Releases are checked for compatibility with the latest release of these versions.
@@ -8,10 +12,10 @@ Releases are checked for compatibility with the latest release of these versions
 
 ## Installation
 
-Download & import the .nupkg from the [Releases](https://github.com/ChanyaVRC/OscCore/releases) page.
+Download & import the .nupkg from the [Releases](https://github.com/billdeitrick/OscCore/releases) page.
 
 I can also download from [NuGet Package Manager](https://docs.microsoft.com/nuget/quickstart/install-and-use-a-package-in-visual-studio). 
-See [nuget.org](https://www.nuget.org/packages/BuildSoft.OscCore/) for the NuGet package latest version.
+See [nuget.org](https://www.nuget.org/packages/Buildetech.OscCore/) for the NuGet package latest version.
 
 # Usage
 

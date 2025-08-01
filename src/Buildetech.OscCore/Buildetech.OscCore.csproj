@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <LangVersion>11.0</LangVersion>
+    <BaseOutputPath>..\..\bin</BaseOutputPath>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>..\..\docs\xml\$(AssemblyName).xml</DocumentationFile>
+
+    <PackageId>Buildetech.OscCore</PackageId>
+    <Version>1.2.2</Version>
+    <Authors>Bill Deitrick</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageDescription>A performance-oriented OSC library for .NET Standard, forked from https://github.com/ChanyaVRC/OscCore</PackageDescription>
+    <RepositoryUrl>https://github.com/billdeitrick/OscCore</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>
