@@ -84,4 +84,33 @@ public class ParsingTests
         Assert.AreEqual(expected[2], midi.Data1);
         Assert.AreEqual(expected[3], midi.Data2);
     }
+
+    [Test]
+    public void ComplexParsing_CharByteArrayString()
+    {
+
+        byte[] payloadBytes = new byte[]
+        {
+            (byte)'/', (byte)'m', (byte)'u', (byte)'l', (byte)'t', (byte)'i', (byte)'/', (byte)'c', 
+            (byte)'h', (byte)'a', (byte)'r', (byte)'_', (byte)'b', (byte)'y', (byte)'t', (byte)'e', 
+            (byte)'s', (byte)'_', (byte)'s', (byte)'t', (byte)'r', (byte)'i', (byte)'n', (byte)'g', 
+            (byte)0, (byte)0, (byte)0, (byte)0, (byte)',', (byte)'c', (byte)'b', (byte)'s', 
+            (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)'Z', 
+            (byte)0, (byte)0, (byte)0, (byte)3, (byte)9, (byte)8, (byte)7, (byte)0,
+            (byte)'x', (byte)'y', (byte)'z', (byte)0
+        };
+        
+        // manually copy into the parser buffer
+        for (var i = 0; i < payloadBytes.Length; i++)
+        {
+            _parser._buffer[i] = payloadBytes[i];
+        }
+
+        _ = _parser.Parse();
+        
+        Assert.AreEqual('Z', _parser.MessageValues.ReadAsciiCharElement(0));
+        Assert.AreEqual( new byte [] { 9, 8, 7 }, _parser.MessageValues.ReadBlobElement(1));
+        Assert.AreEqual("xyz", _parser.MessageValues.ReadStringElement(2));
+
+    }
 }

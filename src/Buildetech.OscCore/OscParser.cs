@@ -255,7 +255,8 @@ public unsafe class OscParser
                     break;
                 case TypeTag.Blob:
                     // read the int that specifies the size of the blob
-                    offset += 4 + Unsafe.As<byte, int>(ref _buffer[offset]);
+                    offset += (7 + ((_buffer[offset] << 24) | (_buffer[offset + 1] << 16) | (_buffer[offset + 2] << 8) |
+                              _buffer[offset + 3])) & ~3; // ensure we interpret as big-endian and align to 4 bytes
                     break;
             }
         }
