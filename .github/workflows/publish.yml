@@ -10,7 +10,7 @@ on:
       - 'netstandard/all-in-one'       # Run the workflow when pushing to the main branch
   pull_request:
     branches:
-      - '*'          # Run the workflow for all pull requests
+      - 'netstandard/all-in-one'       # Run the workflow for pull requests to the main branch
   release:
     types:
       - published    # Run the workflow when a new GitHub release is published
