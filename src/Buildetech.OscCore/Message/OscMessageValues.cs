@@ -50,10 +50,14 @@ public sealed unsafe partial class OscMessageValues
 
     /// <summary>The number of elements in the OSC Message</summary>
     public int ElementCount { get; internal set; }
+    
+    /// <summary>The OSC message address.</summary>
+    public string Address { get; internal set; }
 
     internal OscMessageValues(byte[] buffer, int elementCapacity = 8)
     {
         ElementCount = 0;
+        Address = string.Empty;
         _tags = new TypeTag[elementCapacity];
         _offsets = new int[elementCapacity];
         _sharedBuffer = buffer;
