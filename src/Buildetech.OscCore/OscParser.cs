@@ -59,6 +59,7 @@ public unsafe class OscParser
         var tagSize = ParseTags(_buffer, alignedAddressLength);
         var offset = alignedAddressLength + (tagSize + 4) & ~3;
         FindOffsets(offset);
+        FindAddress();
         return addressLength;
     }
 
@@ -84,6 +85,7 @@ public unsafe class OscParser
         var tagSize = ParseTags(_buffer, startPlusAlignedLength);
         var offset = startPlusAlignedLength + (tagSize + 4) & ~3;
         FindOffsets(offset);
+        FindAddress(offset);
         return addressLength;
     }
 
@@ -223,6 +225,20 @@ public unsafe class OscParser
 
         var length = index - offset + 1;  // need to account for the null terminator when aligning to 32 bits
         return (length + 3) & ~3;            // align to 4 bytes
+    }
+
+    /// <summary>
+    /// Find the address string in the OSC packet and store it in the MessageValues property.
+    /// </summary>
+    /// <param name="offset">The starting offsetfor parsing the address, defaults to 0</param>
+    public void FindAddress(int offset = 0)
+    {
+        
+        int addressLength =  FindUnalignedAddressLength(offset);
+        byte[] addressBytes = new byte[addressLength];
+        Buffer.BlockCopy(_buffer, offset, addressBytes, 0, addressLength);
+        MessageValues.Address = System.Text.Encoding.ASCII.GetString(addressBytes);
+
     }
 
     /// <summary>Find the byte offsets for each element of the message</summary>

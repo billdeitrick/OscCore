@@ -82,6 +82,9 @@
         <member name="P:Buildetech.OscCore.OscMessageValues.ElementCount">
             <summary>The number of elements in the OSC Message</summary>
         </member>
+        <member name="P:Buildetech.OscCore.OscMessageValues.Address">
+            <summary>The OSC message address.</summary>
+        </member>
         <member name="M:Buildetech.OscCore.OscMessageValues.ForEachElement(System.Action{System.Int32,Buildetech.OscCore.TypeTag})">
             <summary>Execute a method for every element in the message</summary>
             <param name="elementAction">A method that takes in the index and type tag for an element</param>
@@ -347,6 +350,12 @@
         </member>
         <member name="M:Buildetech.OscCore.OscParser.ParseTags(System.Byte[],System.Int32)">
             <returns> Size of tags in bytes, including ',' </returns>
+        </member>
+        <member name="M:Buildetech.OscCore.OscParser.FindAddress(System.Int32)">
+            <summary>
+            Find the address string in the OSC packet and store it in the MessageValues property.
+            </summary>
+            <param name="offset">The starting offsetfor parsing the address, defaults to 0</param>
         </member>
         <member name="M:Buildetech.OscCore.OscParser.FindOffsets(System.Int32)">
             <summary>Find the byte offsets for each element of the message</summary>
