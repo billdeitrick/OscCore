@@ -10,7 +10,7 @@
     <DocumentationFile>..\..\docs\xml\$(AssemblyName).xml</DocumentationFile>
 
     <PackageId>Buildetech.OscCore</PackageId>
-    <Version>1.2.3</Version>
+    <Version>1.4.0</Version>
     <Authors>Bill Deitrick</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageDescription>A performance-oriented OSC library for .NET Standard, forked from https://github.com/ChanyaVRC/OscCore</PackageDescription>
