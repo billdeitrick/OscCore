@@ -17,12 +17,16 @@
     <RepositoryUrl>https://github.com/billdeitrick/OscCore</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageReadmeFile>..\..\README.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-    <None Include="..\..\README.md" Pack="true" PackagePath="README.md" />
+    <None Include="README.md" Pack="true" PackagePath="README.md" />
   </ItemGroup>
+
+  <Target Name="CopyReadme" BeforeTargets="Pack">
+    <Copy SourceFiles="..\..\README.md" DestinationFiles="README.md" />
+  </Target>
 
 </Project>
