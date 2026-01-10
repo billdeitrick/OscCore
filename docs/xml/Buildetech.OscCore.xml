@@ -715,11 +715,6 @@
             WARNING - Changing this after strings have been encoded will probably lead to errors!
             </summary>
         </member>
-        <member name="T:BlobHandles.BlobHandleExtensionMethods">
-            <summary>
-            Extension methods for <see cref="T:BlobHandles.BlobHandle"/> or <see cref="T:BlobHandles.BlobString"/>.
-            </summary>
-        </member>
         <member name="T:Unity.IL2CPP.CompilerServices.BlobHandles.Option">
             <summary>
             The code generation options available for IL to C++ conversion.
