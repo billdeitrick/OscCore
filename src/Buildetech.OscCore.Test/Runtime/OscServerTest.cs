@@ -152,6 +152,10 @@ public class OscServerTest
 
         // Remove regex pattern listener
         Assert.IsTrue(_server.RemoveMethod("/address/regex/.*", Listener), "Failed to remove listeners with regex pattern.");
+        
+        // OSC Core adds handler for the specific address based on the pattern match, so we'll remove that as well
+        Assert.IsTrue(_server.RemoveAddress("/address/regex/1"));
+        
         wasCalled = false;
 
         // Send packets again, should NOT trigger listeners
