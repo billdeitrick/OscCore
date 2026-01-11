@@ -106,4 +106,61 @@ public class OscServerTest
 
         Assert.IsTrue(_server.RemoveMonitorCallback(callback1));
     }
+
+    [Test]
+    public void RemoveAddress_RemovesListenerCorrectly()
+    {
+        string testAddress = "/address/remove";
+        bool wasCalled = false;
+        void Listener(OscMessageValues values) => wasCalled = true;
+
+        // Add listener for address
+        _server.TryAddMethod(testAddress, Listener);
+
+        // Send packet, should trigger listener
+        _client.Send(testAddress, 123.45f);
+        TestUtil.LoopWhile(() => !wasCalled, TimeSpan.FromMilliseconds(1000)).Wait();
+        Assert.IsTrue(wasCalled, "Listener should be called after first send.");
+
+        // Remove listener
+        Assert.IsTrue(_server.RemoveAddress(testAddress), "Failed to receive indication the listener was removed.");
+        wasCalled = false;
+
+        // Send packet again, should NOT trigger listener
+        _client.Send(testAddress, 678.90f);
+        TestUtil.LoopWhile(() => !wasCalled, TimeSpan.FromMilliseconds(1000)).Wait();
+        Assert.IsFalse(wasCalled, "Listener should not be called after removal.");
+    }
+
+    [Test]
+    public void RemoveMethod_WithRegex_RemovesListenersCorrectly()
+    {
+        string testAddress1 = "/address/regex/1";
+
+        bool wasCalled = false;
+
+        void Listener(OscMessageValues values) => wasCalled = true;
+
+        // Add regex listener
+        _server.TryAddMethod("/address/regex/.*", Listener);
+
+        // Send packets, should trigger listener
+        _client.Send(testAddress1, 1.0f);
+
+        TestUtil.LoopWhile(() => !wasCalled, TimeSpan.FromMilliseconds(1000)).Wait();
+        Assert.IsTrue(wasCalled, "Listener should be called after first send.");
+
+        // Remove regex pattern listener
+        Assert.IsTrue(_server.RemoveMethod("/address/regex/.*", Listener), "Failed to remove listeners with regex pattern.");
+        
+        // OSC Core adds handler for the specific address based on the pattern match, so we'll remove that as well
+        Assert.IsTrue(_server.RemoveAddress("/address/regex/1"));
+        
+        wasCalled = false;
+
+        // Send packets again, should NOT trigger listeners
+        _client.Send(testAddress1, 3.0f);
+        TestUtil.LoopWhile(() => !wasCalled, TimeSpan.FromMilliseconds(1000)).Wait();
+        Assert.IsFalse(wasCalled, "Listener1 should not be called after removal.");
+    }
 }

@@ -13,8 +13,8 @@ public sealed class OscAddressSpace
 
     // Keep a list of registered address patterns and the methods they're associated with just like addresses
     internal int _patternCount;
-    internal Regex[] _patterns = new Regex[DefaultPatternCapacity];
-    internal OscActionPair[] _patternMethods = new OscActionPair[DefaultPatternCapacity];
+    internal Regex?[] _patterns = new Regex[DefaultPatternCapacity];
+    internal OscActionPair?[] _patternMethods = new OscActionPair[DefaultPatternCapacity];
     private readonly Queue<int> _freedPatternIndices = new();
     private readonly Dictionary<string, int> _patternStringToIndex = new();
 
@@ -96,11 +96,11 @@ public sealed class OscAddressSpace
                 if (!_patternStringToIndex.TryGetValue(address, out var patternIndex))
                     return false;
 
-                var method = _patternMethods[patternIndex].ValueRead;
+                var method = _patternMethods[patternIndex]!.ValueRead;
                 if (method.GetInvocationList().Length == 1)
                 {
-                    _patterns[patternIndex] = null!;
-                    _patternMethods[patternIndex] = null!;
+                    _patterns[patternIndex] = null;
+                    _patternMethods[patternIndex] = null;
                 }
                 else
                 {
@@ -130,17 +130,24 @@ public sealed class OscAddressSpace
         allMatchedMethods.Clear();
 
         bool any = false;
-        for (var i = 0; i < _patternCount; i++)
+        // iterate only active pattern indices so work scales with active patterns
+        foreach (var idx in _patternStringToIndex.Values)
         {
-            if (_patterns[i].IsMatch(address))
+            if (idx < 0 || idx >= _patterns.Length) continue;
+            var pattern = _patterns[idx];
+            if (pattern == null) continue;
+
+            if (pattern.IsMatch(address))
             {
-                var handler = _patternMethods[i];
-                _addressToMethod.Add(address, handler);
-                any = true;
+                var handler = _patternMethods[idx];
+                if (handler != null)
+                {
+                    allMatchedMethods.Add(handler);
+                    any = true;
+                }
             }
         }
 
         return any;
     }
 }
-

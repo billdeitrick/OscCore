@@ -147,7 +147,18 @@ public static class TestUtil
     public static async Task LoopWhile(Func<bool> conditions, TimeSpan timeout)
     {
         using CancellationTokenSource source = new CancellationTokenSource();
+        CancellationToken token = source.Token;
         source.CancelAfter(timeout);
-        await Task.Run(() => { while (conditions()) ; }, source.Token);
+        await Task.Run(() => {
+            try
+            {
+                while (conditions())
+                {
+                    token.ThrowIfCancellationRequested();
+                    Thread.Sleep(10); // avoid busy-waiting
+                }
+            }
+            catch (OperationCanceledException) { }
+        }, token);
     }
 }
